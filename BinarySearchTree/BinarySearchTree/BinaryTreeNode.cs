@@ -39,46 +39,38 @@ public class BinaryTreeNode(int value)
         }
     }
 
-    public bool Lookup(int value)
+    public BinaryTreeNode? Lookup(int value)
     {
         if (value == Value)
-            return true;
+            return this;
 
         if (value < Value)
         {
-            return Left is not null && Left.Lookup(value);
+            return Left?.Lookup(value);
         }
 
-        return Right is not null && Right.Lookup(value);
+        return Right?.Lookup(value);
     }
 
-    public bool LookupIterative(int value)
+    public BinaryTreeNode? LookupIterative(int value)
     {
-        int currentNodeValue;
         var currentNode = this;
-        do
+        while (currentNode is not null)
         {
-            currentNodeValue = currentNode.Value;
-            if (value == currentNodeValue)
-                return true;
+            if (value == currentNode.Value)
+                return currentNode;
 
-            var leftNode = currentNode.Left;
-            var rightNode = currentNode.Right;
-            if (value < currentNodeValue)
+            if (value < currentNode.Value)
             {
-                if (leftNode is null)
-                    return false;
-                currentNode = leftNode;
+                currentNode = currentNode.Left;
             }
             else
             {
-                if (rightNode is null)
-                    return false;
-                currentNode = rightNode;
+                currentNode = currentNode.Right;
             }
-        } while (value != currentNodeValue);
+        }
 
-        return false; // Should not happen
+        return null; // Should not happen
     }
 
     public string GetFormattedJson()
